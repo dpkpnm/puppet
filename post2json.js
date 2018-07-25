@@ -1,16 +1,16 @@
 const fs = require('fs');
 const puppeteer = require("puppeteer");
-var nextLink="goodlyrics1.html";
+var nextLink="swaralu1.html";
 var filename=1;
 download();
 
 
 async function download() {
-	if(filename>33)
+	if(filename>99)
 		return;
 	const browser = await puppeteer.launch();	
 	const page = await browser.newPage();
-	await page.goto("file:///Users/dpkpnm/Documents/GitHub/puppet/goodlyrics"+filename+".html");
+	await page.goto("file:///Users/bobby/Documents/GitHub/puppet/swaralu"+filename+".html");
 	await page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'});
 
 	const obj = await page.evaluate(() => {
@@ -18,7 +18,9 @@ async function download() {
 	  	var a=[];
 	  	console.log($(".post-outer").length);
 	  	$(".post-outer").each(function(k,v) {
-	  		a.push({title:$(v).find(".post-title").text(),txt:$(v).find(".post-body").html().replace(/\<br\>/g,""),labels:$(v).find(".post-labels").text()});
+	  		var txt=[]
+			$(v).find(".post-body span").each(function(i,v) { txt.push(v.textContent);});
+	  		a.push({title:$(v).find(".post-title").text(),txt:txt.join("\n"),labels:$(v).find(".post-labels").text()});
 	  	})
 	  	return  {text:JSON.stringify(a)};
 	});
@@ -28,7 +30,7 @@ async function download() {
       return console.log(err);
   	
   	filename++;
-  	console.log("goodlyrics"+filename);
+  	console.log("swaralu"+filename);
     download();
 	
 	}); 
