@@ -12,12 +12,12 @@ async function download() {
 
 	const obj = await page.evaluate(() => {
   	const $ = window.$;
-  	nextLink = $("#blog-pager-older-link a").attr("href");
-  	return  {text:$(".blog-posts").html(),url:nextLink};
+  	return  {text:$(".blog-posts").html(),url:$("#blog-pager-older-link a").attr("href")};
 	});
 	fs.writeFile("goodlyrics"+fileName+".html", obj.text, function(err) {
     if(err)
       return console.log(err);
+  	nextLink=obj.url;
     console.log("goodlyrics"+fileName+".html");
     fileName++;
     download();
